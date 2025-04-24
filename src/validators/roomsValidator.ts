@@ -10,7 +10,7 @@ export const validateRoom = (roomToValidate: Room): string[] => {
         errorArray.push("Error: The room must have a description");
     }
     if(typeof roomToValidate.photos !== "string" || roomToValidate.photos.length <= 0){
-        errorArray.push("Error: The room must have a description");
+        errorArray.push("Error: The room must have an array of strings");
     }
     if(typeof roomToValidate.offer !== "boolean"){
         errorArray.push("Error: The offer has to be type of boolean");

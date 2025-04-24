@@ -1,6 +1,5 @@
 import express from "express";
 import * as roomsController from "./roomsController";
-import { authenticateToken } from "../middleware/authentication";
 
 const router = express.Router();
 
