@@ -1,18 +1,25 @@
 import { Request, Response } from "express";
-import * as BookingsService from "../services/bookings";
+import {
+    getAllBookingsService,
+    getOneBookingService,
+    createBookingService,
+    updateBookingService,
+    deleteBookingService
+} from "../services/bookings";
 import { Booking } from "../interfaces/BookingInterfaces";
+import { validateBooking } from "../validators/bookingsValidator";
 
-export const getAllBookings = (req: Request, res: Response) => {
-    const bookings = BookingsService.getAllBookings();
+export const getAllBookingsController = (req: Request, res: Response) => {
+    const bookings = getAllBookingsService();
     res.json(bookings);
 }
 
-export const getOneBooking = (req: Request, res: Response) => {
+export const getOneBookingController = (req: Request, res: Response) => {
     const booking_id = parseInt(req.params.id);
     if(isNaN(booking_id)){
         res.status(400).send({message: "The parameter is not a booking id"});
     }
-    const booking = BookingsService.getOneBooking(booking_id);
+    const booking = getOneBookingService(booking_id);
     if(booking){
         res.json(booking);
     }
@@ -21,31 +28,36 @@ export const getOneBooking = (req: Request, res: Response) => {
     }
 }
 
-export const createBooking = (req: Request, res: Response) => {
+export const createBookingController = (req: Request, res: Response) => {
     const newBooking: Booking = req.body;
-    const createdBooking = BookingsService.createBooking(newBooking);
-    if(Array.isArray(createdBooking)){
-        res.status(403).json({errors: createdBooking});
-    }
-    else{
+    const validBooking = validateBooking(newBooking);
+    if(validBooking.length === 0){
+        const createdBooking = createBookingService(newBooking);
         res.status(201).json(createdBooking);
     }
+    else{
+        res.status(403).json({errors: validBooking});
+    }
 };
 
-export const updateBooking = (req: Request, res: Response) => {
+export const updateBookingController = (req: Request, res: Response) => {
     const updatedData: Booking = req.body;
-    const updatedBooking = BookingsService.updateBooking(updatedData);
-    if(Array.isArray(updatedData)){
-        res.status(403).json({errors: updatedBooking});
-    }
-    else{
+    const validBooking = validateBooking(updatedData);
+    if(validBooking.length === 0){
+        const updatedBooking = updateBookingService(updatedData);
         res.status(201).json(updatedBooking);
     }
+    else{
+        res.status(403).json({errors: validBooking});
+    }
 };
 
-export const deleteBooking = (req: Request, res: Response) => {
-    const bookingToDeleteID: number = req.body.booking_id;
-    const deletedBooking = BookingsService.deleteBooking(bookingToDeleteID);
+export const deleteBookingController = (req: Request, res: Response) => {
+    const bookingToDeleteID = parseInt(req.params.id);
+    if(isNaN(bookingToDeleteID)){
+        res.status(400).send({message: "The parameter is not a booking id"});
+    }
+    const deletedBooking = deleteBookingService(bookingToDeleteID);
     if(deletedBooking){
         res.json("Booking deleted");
     }

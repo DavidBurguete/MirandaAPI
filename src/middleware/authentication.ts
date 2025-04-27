@@ -2,22 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
-export const authentication = (req: Request, res: Response, next: NextFunction) => {
-    const { username, password } = req.body;
-
-    if(username === "" || password === ""){
-        res.status(401).send("Please, complete all the fields");
-    }
-
-    if(username !== "admin" || password !== "admin"){
-        res.status(401).send("Either the user or the password is not correct");
-    }
-
-    next();
-}
-
 export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
-    const token = req.headers.authorization;
+    const authorization = req.headers.authorization;
+    const token = authorization && authorization.split(" ")[1];
   
     if (!token) {
         res.status(404).json({ message: 'Token not found' });

@@ -5,10 +5,3 @@ export interface User {
     passwd: string;
     token: string;
 }
-
-export interface UserState {
-    tableHeaders: string[];
-    users: User[];
-    loading: boolean;
-    error: string | null;
-}

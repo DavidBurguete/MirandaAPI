@@ -1,4 +1,4 @@
-import { BookingStatus } from "../enums/BookingEnum";
+import { BookingStatus } from "../interfaces/enums/BookingEnum";
 import { Booking } from "../interfaces/BookingInterfaces";
 import { Room } from "../interfaces/RoomInterfaces";
 const rooms: Room[] = require("../data/Rooms.json");
@@ -8,16 +8,16 @@ export const validateBooking = (bookingToValidate: Booking): string[] => {
     if(typeof bookingToValidate.client_name !== "string"|| bookingToValidate.client_name.length <= 0){
         errorArray.push("Error: The client's name must be a valid type");
     }
-    if(typeof bookingToValidate.room_id !== "number" || isValidRoom(bookingToValidate.room_id)){
+    if(typeof bookingToValidate.room_id !== "number" || !isValidRoom(bookingToValidate.room_id)){
         errorArray.push("Error: The room id must be of an existing room");
     }
-    if(typeof bookingToValidate.order_date !== "string" || isValidDate(bookingToValidate.order_date)){
+    if(typeof bookingToValidate.order_date !== "string" || !isValidDate(bookingToValidate.order_date)){
         errorArray.push("Error: The ordered date is not valid");
     }
-    if(typeof bookingToValidate.check_in_date !== "string" || isValidDate(bookingToValidate.check_in_date)){
+    if(typeof bookingToValidate.check_in_date !== "string" || !isValidDate(bookingToValidate.check_in_date)){
         errorArray.push("Error: The check in date is not valid");
     }
-    if(typeof bookingToValidate.check_out_date !== "string"|| isValidDate(bookingToValidate.check_out_date)){
+    if(typeof bookingToValidate.check_out_date !== "string"|| !isValidDate(bookingToValidate.check_out_date)){
         errorArray.push("Error: The check out date is not valid");
     }
     if(typeof bookingToValidate.status !== "string" || !Object.values(BookingStatus).includes(bookingToValidate.status)){

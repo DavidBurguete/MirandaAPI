@@ -1,8 +1,8 @@
 import express from "express";
-import loginRoutes from "./controllers/loginRoutes";
-import roomRoutes from "./controllers/roomsRoutes";
-import bookingRoutes from "./controllers/bookingsRoutes";
-import usersRoutes from "./controllers/usersRoutes";
+import loginRoutes from "./routes/loginRoutes";
+import roomRoutes from "./routes/roomsRoutes";
+import bookingRoutes from "./routes/bookingsRoutes";
+import usersRoutes from "./routes/usersRoutes";
 import { authenticateToken } from "./middleware/authentication";
 
 const app = express();

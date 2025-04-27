@@ -1,4 +1,4 @@
-import { MessageStatus } from "../enums/ContactEnum";
+import { MessageStatus } from "./enums/ContactEnum";
 
 export interface ContactInterface {
     message_id: number;

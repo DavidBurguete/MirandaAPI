@@ -1,4 +1,4 @@
-import { enumAmenities, enumRoomStatus, enumRoomType } from "../enums/RoomEnum";
+import { enumAmenities, enumRoomStatus, enumRoomType } from "../interfaces/enums/RoomEnum";
 import { Room } from "../interfaces/RoomInterfaces";
 
 export const validateRoom = (roomToValidate: Room): string[] => {
