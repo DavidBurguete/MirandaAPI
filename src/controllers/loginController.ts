@@ -4,13 +4,15 @@ import "dotenv/config";
 
 export const login = (req: Request, res: Response) => {
     const { username, password } = req.body;
+    console.log(req);
+    console.log(req.body);
 
     if(username === "" || password === ""){
         res.status(400).send("Please, complete all the fields");
     }
 
     if(username !== "admin" || password !== "admin"){
-        res.status(401).send("Either the user or the password is not correct");
+        res.status(401).send({message: "Either the user or the password is not correct", username: username, password: password});
     }
     const token = jwt.sign(
         { username },

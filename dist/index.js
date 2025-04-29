@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.handler = void 0;
+const express_1 = __importDefault(require("express"));
+const loginRoutes_1 = __importDefault(require("./routes/loginRoutes"));
+const roomsRoutes_1 = __importDefault(require("./routes/roomsRoutes"));
+const bookingsRoutes_1 = __importDefault(require("./routes/bookingsRoutes"));
+const usersRoutes_1 = __importDefault(require("./routes/usersRoutes"));
+const contactsRoutes_1 = __importDefault(require("./routes/contactsRoutes"));
+const authentication_1 = require("./middleware/authentication");
+const serverless_http_1 = __importDefault(require("serverless-http"));
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use("/api/v1/login", loginRoutes_1.default);
+app.use("/api/v1/rooms", authentication_1.authenticateToken, roomsRoutes_1.default);
+app.use("/api/v1/bookings", authentication_1.authenticateToken, bookingsRoutes_1.default);
+app.use("/api/v1/users", authentication_1.authenticateToken, usersRoutes_1.default);
+app.use("/api/v1/contact", authentication_1.authenticateToken, contactsRoutes_1.default);
+exports.handler = (0, serverless_http_1.default)(app);
