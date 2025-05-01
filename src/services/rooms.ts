@@ -1,31 +1,32 @@
 import { Room } from "../interfaces/RoomInterfaces";
-import { validateRoom } from "../validators/roomsValidator";
+import RoomModel from "../schemas/roomsSchema";
 const rooms: Room[] = require("../data/Rooms.json");
 
-export const getAllRoomsService = (): Room[] => {
-    return rooms as Room[];
+export const getAllRoomsService = async (): Promise<Room[]> => {
+    return await RoomModel.find();
 }
 
-export const getOneRoomService = (id: number): Room | undefined => {
-    return rooms.find((room: Room) => room.room_id === id);
+export const getOneRoomService = async (id: number): Promise<Room | undefined> => {
+    const roomsToGetOne = await RoomModel.find();
+    return roomsToGetOne.find((room: Room) => room.room_id === id);
 }
 
-export const createRoomService = (newRoom: Room): Room[] | string[] => {
-    const room: Room = { ...newRoom };
-    rooms.push(room);
-    return rooms;
+export const createRoomService = async (newRoom: Room): Promise<Room[]> => {
+    await RoomModel.create(newRoom);
+    return await getAllRoomsService();
 };
 
-export const updateRoomService = (updatedRoom: Room): Room | string[] => {
+export const updateRoomService = async (updatedRoom: Room): Promise<Room> => {
     rooms[updatedRoom.room_id] = { ...updatedRoom };
-    return rooms[updatedRoom.room_id];
+    const updateRoom = await RoomModel.findOneAndUpdate(
+        { room_id: updatedRoom.room_id },
+        updatedRoom,
+        { new: true }
+    );
+    return updateRoom as Room;
 };
 
-export const deleteRoomService = (roomID: number): boolean => {
-    const indexOfRoom = rooms.findIndex((room: Room) => room.room_id === roomID);
-    if(indexOfRoom !== -1){
-        rooms.splice(indexOfRoom, 1);
-        return true;
-    }
-    return false;
+export const deleteRoomService = async (roomID: number): Promise<boolean> => {
+    const deletedRoom = await RoomModel.deleteOne({room_id: roomID});
+    return deletedRoom.deletedCount === 1;
 }
