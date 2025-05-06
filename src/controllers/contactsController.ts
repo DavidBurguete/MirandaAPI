@@ -3,24 +3,24 @@ import {
     getAllContactsService,
     updateContactService
 } from "../services/contact";
-import { ContactInterface } from "../interfaces/ContactInterface";
 
-export const getAllContactsController = (req: Request, res: Response) => {
-    const contacts = getAllContactsService();
-    res.json(contacts);
+export const getAllContactsController = async (req: Request, res: Response) => {
+    try{
+        const contacts = await getAllContactsService();
+        res.json(contacts);
+    }
+    catch(error){
+        res.status(500).json({message: "Couldn't fetch the messages"});
+    }
 }
 
-export const updateContactController = (req: Request, res: Response) => {
-    const updatedID: number = parseInt(req.params.id);
-    if(isNaN(updatedID)){
-        res.status(400).send({message: "The parameter is not a contact id"});
-    }
-    const validContact = getAllContactsService().find(contact => contact.message_id === updatedID);
-    if(validContact !== undefined){
-        const updatedContact = updateContactService(updatedID - 1);
+export const updateContactController = async (req: Request, res: Response) => {
+    const updatedID: string = req.params.id;
+    try{
+        const updatedContact = await updateContactService(updatedID);
         res.status(201).json(updatedContact);
     }
-    else{
-        res.status(403).json({errors: "Couldn't find the specified contact message to archive"});
+    catch(error){
+        res.status(500).json({message: "Couldn't archive the message"});
     }
 };

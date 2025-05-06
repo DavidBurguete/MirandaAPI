@@ -1,7 +1,6 @@
 import { MessageStatus } from "./enums/ContactEnum";
 
 export interface ContactInterface {
-    message_id: number;
     date: string;
     customer: string;
     email: string;

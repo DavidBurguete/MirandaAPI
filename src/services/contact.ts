@@ -1,12 +1,16 @@
 import { ContactInterface } from "../interfaces/ContactInterface";
 import { MessageStatus } from "../interfaces/enums/ContactEnum";
-const contact: ContactInterface[] = require("../data/Contact.json");
+import ContactsModel from "../schemas/contactSchema";
 
-export const getAllContactsService = (): ContactInterface[] => {
-    return contact as ContactInterface[];
+export const getAllContactsService = async (): Promise<ContactInterface[]> => {
+    return await ContactsModel.find();
 }
 
-export const updateContactService = (updatedContactID: number): ContactInterface => {
-    contact[updatedContactID] = { ...contact[updatedContactID], status: MessageStatus.Archived };
-    return contact[updatedContactID];
+export const updateContactService = async (updatedContactID: string): Promise<ContactInterface> => {
+    const updateContact = await ContactsModel.findByIdAndUpdate(
+        updatedContactID,
+        { status: MessageStatus.Archived },
+        { new: true }
+    );
+    return updateContact as ContactInterface;
 };

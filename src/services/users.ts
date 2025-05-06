@@ -1,31 +1,30 @@
 import { User } from "../interfaces/UserInterfaces";
-import { validateUser } from "../validators/usersValidator";
-const users: User[] = require("../data/Users.json");
+import UsersModel from "../schemas/usersSchema";
 
-export const getAllUsersService = (): User[] => {
-    return users as User[];
+export const getAllUsersService = async (): Promise<User[]> => {
+    return await UsersModel.find();
 }
 
-export const getOneUserService = (id: number): User | undefined => {
-    return users.find((user: User) => user.id === id);
+export const getOneUserService = async (id: string): Promise<User | null> => {
+    const getOneUser = await UsersModel.findById(id);
+    return getOneUser as User | null;
 }
 
-export const createUserService = (newUser: User): User[] | string[] => {
-    const user: User = { ...newUser };
-    users.push(user);
-    return users;
+export const createUserService = async (newUser: User): Promise<User[]> => {
+    await UsersModel.create(newUser);
+    return await getAllUsersService();
 };
 
-export const updateUserService = (updatedUser: User): User | string[] => {
-    users[updatedUser.id] = { ...updatedUser };
-    return users[updatedUser.id];
+export const updateUserService = async (user_id: string, updatedUser: User): Promise<User> => {
+    const updateUser = await UsersModel.findByIdAndUpdate(
+        user_id,
+        updatedUser,
+        { new: true }
+    );
+    return updateUser as User;
 };
 
-export const deleteUserService = (userID: number): boolean => {
-    const indexOfUser = users.findIndex((user: User) => user.id === userID);
-    if(indexOfUser !== -1){
-        users.splice(indexOfUser, 1);
-        return true;
-    }
-    return false;
+export const deleteUserService = async (userID: string): Promise<boolean> => {
+    const deletedUser = await UsersModel.findByIdAndDelete(userID);
+    return deletedUser !== null;
 }
