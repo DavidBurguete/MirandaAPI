@@ -9,59 +9,79 @@ import {
 import { Booking } from "../interfaces/BookingInterfaces";
 import { validateBooking } from "../validators/bookingsValidator";
 
-export const getAllBookingsController = (req: Request, res: Response) => {
-    const bookings = getAllBookingsService();
-    res.json(bookings);
-}
-
-export const getOneBookingController = (req: Request, res: Response) => {
-    const booking_id = parseInt(req.params.id);
-    if(isNaN(booking_id)){
-        res.status(400).send({message: "The parameter is not a booking id"});
+export const getAllBookingsController = async (req: Request, res: Response) => {
+    try{
+        const bookings = await getAllBookingsService();
+        res.json(bookings);
     }
-    const booking = getOneBookingService(booking_id);
-    if(booking){
-        res.json(booking);
-    }
-    else{
-        res.status(404).json({message: "Booking not found"});
+    catch(error){
+        res.status(500).json({message: "Error while fetching"});
     }
 }
 
-export const createBookingController = (req: Request, res: Response) => {
+export const getOneBookingController = async (req: Request, res: Response) => {
+    const booking_id = req.params.id;
+    try{
+        const booking = await getOneBookingService(booking_id);
+        if(booking){
+            res.json(booking);
+        }
+        else{
+            res.status(404).json({message: "Booking not found"});
+        }
+    }
+    catch(error){
+        res.status(500).json({message: "There was an error while fetching the booking"});
+    }
+}
+
+export const createBookingController = async (req: Request, res: Response) => {
     const newBooking: Booking = req.body;
     const validBooking = validateBooking(newBooking);
     if(validBooking.length === 0){
-        const createdBooking = createBookingService(newBooking);
-        res.status(201).json(createdBooking);
+        try{
+            const createdBooking = await createBookingService(newBooking);
+            res.status(201).json(createdBooking);
+        }
+        catch(error){
+            res.status(500).json({message: "Couldn't add the new booking"});
+        }
     }
     else{
         res.status(403).json({errors: validBooking});
     }
 };
 
-export const updateBookingController = (req: Request, res: Response) => {
+export const updateBookingController = async (req: Request, res: Response) => {
+    const booking_id: string = req.params.id;
     const updatedData: Booking = req.body;
     const validBooking = validateBooking(updatedData);
     if(validBooking.length === 0){
-        const updatedBooking = updateBookingService(updatedData);
-        res.status(201).json(updatedBooking);
+        try{
+            const updatedBooking = await updateBookingService(booking_id, updatedData);
+            res.status(201).json(updatedBooking);
+        }
+        catch(error){
+            res.status(500).json({message: "Couldn't update the booking"});
+        }
     }
     else{
         res.status(403).json({errors: validBooking});
     }
 };
 
-export const deleteBookingController = (req: Request, res: Response) => {
-    const bookingToDeleteID = parseInt(req.params.id);
-    if(isNaN(bookingToDeleteID)){
-        res.status(400).send({message: "The parameter is not a booking id"});
+export const deleteBookingController = async (req: Request, res: Response) => {
+    const bookingToDeleteID = req.params.id;
+    try{
+        const deletedBooking = await deleteBookingService(bookingToDeleteID);
+        if(deletedBooking){
+            res.json("Booking deleted");
+        }
+        else{
+            res.status(404).json("Booking not found");
+        }
     }
-    const deletedBooking = deleteBookingService(bookingToDeleteID);
-    if(deletedBooking){
-        res.json("Booking deleted");
-    }
-    else{
-        res.status(404).json("Booking not found");
+    catch(error){
+        res.status(500).json({message: "Couldn't delete the booking"});
     }
 };

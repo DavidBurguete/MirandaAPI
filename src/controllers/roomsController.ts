@@ -15,15 +15,12 @@ export const getAllRoomsController = async (req: Request, res: Response) => {
         res.json(rooms);
     }
     catch(error){
-        res.status(500).json({ error: 'Error while fetching rooms' });
+        res.status(500).json({ message: 'Error while fetching rooms' });
     }
 }
 
 export const getOneRoomController = async (req: Request, res: Response) => {
-    const room_id = parseInt(req.params.id);
-    if(isNaN(room_id)){
-        res.status(400).send({message: "The parameter is not a room id"});
-    }
+    const room_id = req.params.id;
     try{
         const room = await getOneRoomService(room_id);
         if(room){
@@ -56,11 +53,12 @@ export const createRoomController = async (req: Request, res: Response) => {
 };
 
 export const updateRoomController = async (req: Request, res: Response) => {
+    const room_id: string = req.params.id;
     const updatedData: Room = req.body;
     const validRoom = validateRoom(updatedData);
     if(validRoom.length === 0){
         try{
-            const updatedRoom = await updateRoomService(updatedData);
+            const updatedRoom = await updateRoomService(room_id, updatedData);
             res.status(201).json(updatedRoom);
         }
         catch(error){
@@ -73,10 +71,7 @@ export const updateRoomController = async (req: Request, res: Response) => {
 };
 
 export const deleteRoomController = async (req: Request, res: Response) => {
-    const roomToDeleteID = parseInt(req.params.id);
-    if(isNaN(roomToDeleteID)){
-        res.status(400).send({message: "The parameter is not a room id"});
-    }
+    const roomToDeleteID = req.params.id;
     try{
         const deletedRoom = await deleteRoomService(roomToDeleteID);
         if(deletedRoom){

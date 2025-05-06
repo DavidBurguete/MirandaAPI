@@ -1,14 +1,13 @@
 import { Room } from "../interfaces/RoomInterfaces";
 import RoomModel from "../schemas/roomsSchema";
-const rooms: Room[] = require("../data/Rooms.json");
 
 export const getAllRoomsService = async (): Promise<Room[]> => {
     return await RoomModel.find();
 }
 
-export const getOneRoomService = async (id: number): Promise<Room | undefined> => {
-    const roomsToGetOne = await RoomModel.find();
-    return roomsToGetOne.find((room: Room) => room.room_id === id);
+export const getOneRoomService = async (id: string): Promise<Room | null> => {
+    const roomsToGetOne = await RoomModel.findById(id);
+    return roomsToGetOne as Room | null;
 }
 
 export const createRoomService = async (newRoom: Room): Promise<Room[]> => {
@@ -16,17 +15,16 @@ export const createRoomService = async (newRoom: Room): Promise<Room[]> => {
     return await getAllRoomsService();
 };
 
-export const updateRoomService = async (updatedRoom: Room): Promise<Room> => {
-    rooms[updatedRoom.room_id] = { ...updatedRoom };
-    const updateRoom = await RoomModel.findOneAndUpdate(
-        { room_id: updatedRoom.room_id },
+export const updateRoomService = async (room_id: String, updatedRoom: Room): Promise<Room> => {
+    const updateRoom = await RoomModel.findByIdAndUpdate(
+        room_id,
         updatedRoom,
         { new: true }
     );
     return updateRoom as Room;
 };
 
-export const deleteRoomService = async (roomID: number): Promise<boolean> => {
-    const deletedRoom = await RoomModel.deleteOne({room_id: roomID});
-    return deletedRoom.deletedCount === 1;
+export const deleteRoomService = async (roomID: string): Promise<boolean> => {
+    const deletedRoom = await RoomModel.findByIdAndDelete(roomID);
+    return deletedRoom !== null;
 }

@@ -1,9 +1,9 @@
 import { BookingStatus } from "./enums/BookingEnum";
+import { Room } from "./RoomInterfaces";
 
 export interface Booking {
     client_name: string,
-    booking_id: number,
-    room_id: number,
+    room: Room,
     client_id: number,
     order_date: string,
     check_in_date: string,

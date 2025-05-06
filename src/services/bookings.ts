@@ -1,31 +1,30 @@
 import { Booking } from "../interfaces/BookingInterfaces";
-import { validateBooking } from "../validators/bookingsValidator";
-const bookings: Booking[] = require("../data/Bookings.json");
+import BookingModel from "../schemas/bookingsSchema";
 
-export const getAllBookingsService = (): Booking[] => {
-    return bookings as Booking[];
+export const getAllBookingsService = async (): Promise<Booking[]> => {
+    return await BookingModel.find();
 }
 
-export const getOneBookingService = (id: number): Booking | undefined => {
-    return bookings.find((booking: Booking) => booking.booking_id === id);
+export const getOneBookingService = async (id: string): Promise<Booking | null> => {
+    const oneBooking = await BookingModel.findById(id);
+    return oneBooking as Booking | null;
 }
 
-export const createBookingService = (newBooking: Booking): Booking[] | string[] => {
-    const booking: Booking = { ...newBooking };
-    bookings.push(booking);
-    return bookings;
+export const createBookingService = async (newBooking: Booking): Promise<Booking[]> => {
+    await BookingModel.create(newBooking);
+    return await getAllBookingsService();
 };
 
-export const updateBookingService = (updatedBooking: Booking): Booking | string[] => {
-    bookings[updatedBooking.booking_id] = { ...updatedBooking };
-    return bookings[updatedBooking.booking_id];
+export const updateBookingService = async (booking_id: string, updatedBooking: Booking): Promise<Booking> => {
+    const updateBooking = await BookingModel.findByIdAndUpdate(
+        booking_id,
+        updatedBooking,
+        { new: true }
+    );
+    return updateBooking as Booking;
 };
 
-export const deleteBookingService = (bookingID: number): boolean => {
-    const indexOfBooking = bookings.findIndex((booking: Booking) => booking.booking_id === bookingID);
-    if(indexOfBooking !== -1){
-        bookings.splice(indexOfBooking, 1);
-        return true;
-    }
-    return false;
+export const deleteBookingService = async (bookingID: string): Promise<boolean> => {
+    const deletedBooking = await BookingModel.findByIdAndDelete(bookingID);
+    return deletedBooking !== null;
 }

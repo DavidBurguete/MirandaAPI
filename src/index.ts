@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 import serverless from "serverless-http";
 
 const app = express();
-const PORT = 5173;
+const PORT = 5174;
 
 app.use(express.json());
 app.use("/api/v1/login", loginRoutes);

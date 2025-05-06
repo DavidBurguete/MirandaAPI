@@ -13,7 +13,6 @@ export const login = async (req: Request, res: Response) => {
     try{
         const user = await UserModel.findOne({user: username});
 
-        console.log(user);
         if(!user || user.passwd !== password){
             res.status(401).send({message: "Either the user or the password is not correct"});
         }

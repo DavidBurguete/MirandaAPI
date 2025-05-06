@@ -8,9 +8,9 @@ export const validateBooking = (bookingToValidate: Booking): string[] => {
     if(typeof bookingToValidate.client_name !== "string"|| bookingToValidate.client_name.length <= 0){
         errorArray.push("Error: The client's name must be a valid type");
     }
-    if(typeof bookingToValidate.room_id !== "number" || !isValidRoom(bookingToValidate.room_id)){
-        errorArray.push("Error: The room id must be of an existing room");
-    }
+    // if(typeof bookingToValidate.room_id !== "number" || !isValidRoom(bookingToValidate.room_id)){
+    //     errorArray.push("Error: The room id must be of an existing room");
+    // }
     if(typeof bookingToValidate.order_date !== "string" || !isValidDate(bookingToValidate.order_date)){
         errorArray.push("Error: The ordered date is not valid");
     }
@@ -34,7 +34,7 @@ const isValidDate = (dateToValidate: string): boolean => {
     return !isNaN(date.getDate());
 }
 
-const isValidRoom = (validID: number): boolean => {
-    const room = rooms.filter(room => room.room_id === validID);
-    return room.length !== 0;
-}
+// const isValidRoom = (validID: number): boolean => {
+//     const room = rooms.filter(room => room._id === validID);
+//     return room.length !== 0;
+// }

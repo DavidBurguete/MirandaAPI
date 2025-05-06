@@ -3,7 +3,6 @@ import { Room } from "../interfaces/RoomInterfaces";
 import { enumAmenities, enumRoomStatus, enumRoomType } from "../interfaces/enums/RoomEnum";
 
 const RoomsSchema = new mongoose.Schema<Room>({
-    room_id: { type: Number, required: true, unique: true },
     room_type: { type: String, enum: Object.values(enumRoomType), required: true },
     description: { type: String, required: true },
     photos: { type: String, required: true },
