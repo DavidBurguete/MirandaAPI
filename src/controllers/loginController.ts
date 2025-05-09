@@ -7,7 +7,7 @@ export const login = async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
     if(username === "" || password === ""){
-        res.status(400).send("Please, complete all the fields");
+        res.status(400).send({message: "Please, complete all the fields"});
     }
 
     try{
@@ -25,7 +25,7 @@ export const login = async (req: Request, res: Response) => {
             }
         );
 
-        res.status(200).send({message: "User Logged", token: token});
+        res.status(200).send({user: user, token: token});
     }
     catch(error){
         res.status(500).json({message: "Error on login"});

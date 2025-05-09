@@ -48,7 +48,7 @@ export const createBookingController = async (req: Request, res: Response) => {
         }
     }
     else{
-        res.status(403).json({errors: validBooking});
+        res.status(403).json({message: validBooking});
     }
 };
 
@@ -66,7 +66,7 @@ export const updateBookingController = async (req: Request, res: Response) => {
         }
     }
     else{
-        res.status(403).json({errors: validBooking});
+        res.status(403).json({message: validBooking});
     }
 };
 
@@ -75,10 +75,10 @@ export const deleteBookingController = async (req: Request, res: Response) => {
     try{
         const deletedBooking = await deleteBookingService(bookingToDeleteID);
         if(deletedBooking){
-            res.json("Booking deleted");
+            res.json({message: "Booking deleted"});
         }
         else{
-            res.status(404).json("Booking not found");
+            res.status(404).json({message: "Booking not found"});
         }
     }
     catch(error){

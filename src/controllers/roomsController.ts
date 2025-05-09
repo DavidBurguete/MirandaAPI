@@ -36,11 +36,11 @@ export const getOneRoomController = async (req: Request, res: Response) => {
 }
 
 export const createRoomController = async (req: Request, res: Response) => {
-    const newRoom: Room = req.body;
-    const validRoom = validateRoom(newRoom);
+    const newRoom = req.body;
+    const validRoom = validateRoom(newRoom.newRoom as Room);
     if(validRoom.length === 0){
         try{
-            const createdRoom = await createRoomService(newRoom);
+            const createdRoom = await createRoomService(newRoom.newRoom as Room);
             res.status(201).json(createdRoom);
         }
         catch(error){
@@ -48,17 +48,17 @@ export const createRoomController = async (req: Request, res: Response) => {
         }
     }
     else{
-        res.status(403).json({errors: validRoom});
+        res.status(403).json({message: validRoom});
     }
 };
 
 export const updateRoomController = async (req: Request, res: Response) => {
     const room_id: string = req.params.id;
-    const updatedData: Room = req.body;
-    const validRoom = validateRoom(updatedData);
+    const updatedData = req.body;
+    const validRoom = validateRoom(updatedData.updatedRoom as Room);
     if(validRoom.length === 0){
         try{
-            const updatedRoom = await updateRoomService(room_id, updatedData);
+            const updatedRoom = await updateRoomService(room_id, updatedData.updatedRoom as Room);
             res.status(201).json(updatedRoom);
         }
         catch(error){
@@ -66,7 +66,7 @@ export const updateRoomController = async (req: Request, res: Response) => {
         }
     }
     else{
-        res.status(403).json({errors: validRoom});
+        res.status(403).json({message: validRoom});
     }
 };
 
@@ -75,10 +75,10 @@ export const deleteRoomController = async (req: Request, res: Response) => {
     try{
         const deletedRoom = await deleteRoomService(roomToDeleteID);
         if(deletedRoom){
-            res.json("Room deleted");
+            res.json({message: "Room deleted"});
         }
         else{
-            res.status(404).json("Room not found");
+            res.status(404).json({message: "Room not found"});
         }
     }
     catch(error){

@@ -11,7 +11,7 @@ const login = (req, res) => {
     console.log(req);
     console.log(req.body);
     if (username === "" || password === "") {
-        res.status(400).send("Please, complete all the fields");
+        res.status(400).send({message: "Please, complete all the fields"});
     }
     if (username !== "admin" || password !== "admin") {
         res.status(401).send({ message: "Either the user or the password is not correct", username: username, password: password });

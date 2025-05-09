@@ -18,7 +18,7 @@ export const validateRoom = (roomToValidate: Room): string[] => {
     if(typeof roomToValidate.price !== "number" || roomToValidate.price <= 0){
         errorArray.push("Error: The price has to be a number over 0");
     }
-    if(typeof roomToValidate.discount !== "number" || roomToValidate.discount < 0 || roomToValidate.discount > 100){
+    if(typeof roomToValidate.discount !== "number" || roomToValidate.discount < 0 || roomToValidate.discount > roomToValidate.price){
         errorArray.push("Error: The discount has to be a number over 0 and below 100");
     }
     if(typeof roomToValidate.cancellation_policy !== "string"|| roomToValidate.cancellation_policy.length <= 0){

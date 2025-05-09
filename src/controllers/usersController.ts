@@ -48,7 +48,7 @@ export const createUserController = async (req: Request, res: Response) => {
         }
     }
     else{
-        res.status(403).json({errors: validUser});
+        res.status(403).json({message: validUser});
     }
 };
 
@@ -66,7 +66,7 @@ export const updateUserController = async (req: Request, res: Response) => {
         }
     }
     else{
-        res.status(403).json({errors: validUser});
+        res.status(403).json({message: validUser});
     }
 };
 
@@ -75,10 +75,10 @@ export const deleteUserController = async (req: Request, res: Response) => {
     try{
         const deletedUser = await deleteUserService(UserToDeleteID);
         if(deletedUser){
-            res.json("User deleted");
+            res.json({message: "User deleted"});
         }
         else{
-            res.status(404).json("User not found");
+            res.status(404).json({message: "User not found"});
         }
     }
     catch(error){
