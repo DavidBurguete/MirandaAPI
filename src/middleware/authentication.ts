@@ -9,11 +9,12 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     if (!token) {
         res.status(404).json({ message: 'Token not found' });
     }
-  
-    try {
-        const decoded = jwt.verify(token as string, process.env.SECRET_KEY as string);
-        next();
-    } catch (error) {
-        res.status(403).json({ message: 'Token not valid' });
+    else{
+        try {
+            const decoded = jwt.verify(token as string, process.env.SECRET_KEY as string);
+            next();
+        } catch (error) {
+            res.status(403).json({ message: 'Token not valid' });
+        }
     }
 };
