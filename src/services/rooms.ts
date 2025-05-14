@@ -10,9 +10,9 @@ export const getOneRoomService = async (id: string): Promise<Room | null> => {
     return roomsToGetOne as Room | null;
 }
 
-export const createRoomService = async (newRoom: Room): Promise<Room[]> => {
-    await RoomModel.create(newRoom);
-    return await getAllRoomsService();
+export const createRoomService = async (newRoom: Room): Promise<Room> => {
+    const createdRoom = await RoomModel.create(newRoom);
+    return createdRoom;
 };
 
 export const updateRoomService = async (room_id: String, updatedRoom: Room): Promise<Room> => {

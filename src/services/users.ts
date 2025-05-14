@@ -10,9 +10,9 @@ export const getOneUserService = async (id: string): Promise<User | null> => {
     return getOneUser as User | null;
 }
 
-export const createUserService = async (newUser: User): Promise<User[]> => {
-    await UsersModel.create(newUser);
-    return await getAllUsersService();
+export const createUserService = async (newUser: User): Promise<User> => {
+    const createdUser = await UsersModel.create(newUser);
+    return createdUser;
 };
 
 export const updateUserService = async (user_id: string, updatedUser: User): Promise<User> => {

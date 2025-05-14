@@ -6,11 +6,11 @@ export const getAllContactsService = async (): Promise<ContactInterface[]> => {
     return await ContactsModel.find();
 }
 
-export const updateContactService = async (updatedContactID: string): Promise<ContactInterface> => {
+export const updateContactService = async (updatedContactID: string): Promise<ContactInterface[]> => {
     const updateContact = await ContactsModel.findByIdAndUpdate(
         updatedContactID,
         { status: MessageStatus.Archived },
         { new: true }
     );
-    return updateContact as ContactInterface;
+    return await getAllContactsService();
 };
