@@ -10,9 +10,9 @@ export const getOneBookingService = async (id: string): Promise<Booking | null> 
     return oneBooking as Booking | null;
 }
 
-export const createBookingService = async (newBooking: Booking): Promise<Booking[]> => {
-    await BookingModel.create(newBooking);
-    return await getAllBookingsService();
+export const createBookingService = async (newBooking: Booking): Promise<Booking> => {
+    const createdBooking = await BookingModel.create(newBooking);
+    return createdBooking;
 };
 
 export const updateBookingService = async (booking_id: string, updatedBooking: Booking): Promise<Booking> => {

@@ -20,11 +20,10 @@ const BookingsSchema = new mongoose.Schema<Booking>({
         },
         status: { type: String, enum: Object.values(enumRoomStatus), required: true }
     }, required: true},
-    client_id: { type: Number, required: true },
     order_date: { type: String, required: true },
     check_in_date: { type: String, required: true },
     check_out_date: { type: String, required: true },
-    special_request: { type: String, required: true },
+    special_request: { type: String, default: "" },
     status: { type: String, enum: Object.values(BookingStatus), required: true }
 });
 

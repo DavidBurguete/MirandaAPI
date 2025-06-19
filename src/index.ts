@@ -11,7 +11,6 @@ import { APIGatewayProxyEvent, Context } from "aws-lambda";
 var cors = require('cors')
 
 const app = express();
-const PORT = 5174;
 
 app.use(express.json());
 app.use(cors());
@@ -25,22 +24,19 @@ mongoose.connect(process.env.MONGODB_URL || '')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error(err));
 
-// export const handler = serverless(app, {
-//   request: (req: Request, event: APIGatewayProxyEvent, context: Context) => {
-//     if (event.body) {
-//       try {
-//         const rawBody = event.isBase64Encoded
-//           ? Buffer.from(event.body, "base64").toString("utf8")
-//           : event.body;
+export const handler = serverless(app, {
+  request: (req: Request, event: APIGatewayProxyEvent, context: Context) => {
+    if (event.body) {
+      try {
+        const rawBody = event.isBase64Encoded
+          ? Buffer.from(event.body, "base64").toString("utf8")
+          : event.body;
 
-//         (req as any).body = JSON.parse(rawBody);
-//       } catch (error) {
-//         console.error("Failed to parse body:", error);
-//         (req as any).body = {};
-//       }
-//     }
-//   },
-// });
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+        (req as any).body = JSON.parse(rawBody);
+      } catch (error) {
+        console.error("Failed to parse body:", error);
+        (req as any).body = {};
+      }
+    }
+  },
 });
