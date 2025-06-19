@@ -21,10 +21,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Run build
+        run: npm run build
+
+      - name: install serverless
+        run: npm install -g serverless@3.40.0
+
       - name: Deploy to Lambda with Serverless
-        uses: serverless/github-action@v3
-        with:
-          args: deploy
+        run: serverless deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.PUBLIC_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
