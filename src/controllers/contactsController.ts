@@ -33,7 +33,7 @@ export const postNewContactController = async (req: Request, res: Response) => {
         try{
             let hoy = new Date();
             const newMessage = {
-                date: hoy.getDate() + "/" + (hoy.getMonth() + 1) + "/" + hoy.getFullYear(),
+                date: (hoy.getMonth() + 1) + "/" + hoy.getDate() + "/" + hoy.getFullYear(),
                 customer: name,
                 email: email,
                 phone_number: phone,
