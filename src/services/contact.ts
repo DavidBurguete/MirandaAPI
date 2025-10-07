@@ -6,6 +6,10 @@ export const getAllContactsService = async (): Promise<ContactInterface[]> => {
     return await ContactsModel.find();
 }
 
+export const newMessageService = async (newMessage: ContactInterface): Promise<void> => {
+    await ContactsModel.create(newMessage);
+}
+
 export const updateContactService = async (updatedContactID: string): Promise<ContactInterface[]> => {
     const updateContact = await ContactsModel.findByIdAndUpdate(
         updatedContactID,
